@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the Git repository
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/pavankolasani719/Python']]])
+            }
+        }
+
+        stage('Read Files') {
+            steps {
+                script {
+                    def workspace = pwd()
+                    def calculatorFolder = "${workspace}/calculator"
+                    def calculatorFile = "${calculatorFolder}/calculator.py"
+                    def dockerfile = "${workspace}/Dockerfile"
+
+                    if (fileExists(calculatorFolder)) {
+                        def calculatorCode = readFile(file: calculatorFile).trim()
+                        echo "Contents of calculator.py:"
+                        echo calculatorCode
+                    } else {
+                        echo "The 'calculator' folder does not exist in the repository."
+                    }
+
+                    if (fileExists(dockerfile)) {
+                        def dockerfileContent = readFile(file: dockerfile).trim()
+                        echo "\nContents of Dockerfile:"
+                        echo dockerfileContent
+                    } else {
+                        echo "The 'Dockerfile' does not exist in the repository."
+                    }
+                }
+            }
+        }
+    }
+}
