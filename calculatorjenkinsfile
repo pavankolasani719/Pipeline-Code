@@ -1,5 +1,8 @@
 pipeline {
     agent any
+environment {
+DOCKERHUB_CREDENTIALS = credentials ('dockerhub')
+}
 
     stages {
         stage('Checkout') {
@@ -34,6 +37,20 @@ pipeline {
                     }
                 }
             }
+        }
+            stage('login to dockerhub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    }
+                }
+                stage('push image') {
+            steps {
+                    sh 'docker push \nContents of Dockerfile
+            }
+
+post{
+    always{
+        sh 'docker logout'
         }
     }
 }
