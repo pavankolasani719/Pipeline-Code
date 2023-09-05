@@ -52,7 +52,7 @@ pipeline {
                 -Dsonar.login=your-sonarqube-token
             """.stripIndent() // Customize with your SonarQube details
             
-            bat(script: "${scannerBin} ${scannerArgs}", returnStatus: true)
+            bat(script: "C:\ProgramData\Jenkins\.jenkins\tools\hudson.plugins.sonar.SonarRunnerInstallation\SonarScanner\bin\\sonar-scanner.bat ${scannerArgs}", returnStatus: true)
         }
     }
 }
