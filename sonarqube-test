@@ -41,14 +41,22 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarScanner';
-    withSonarQubeEnv() {
-      sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
+    steps {
+        script {
+            def scannerHome = tool 'SonarScanner';
+            def scannerBin = "${scannerHome}\\bin\\sonar-scanner.bat" // Use .bat extension for Windows
+            def scannerArgs = """
+                -Dsonar.projectKey=myProjectKey
+                -Dsonar.sources=.
+                -Dsonar.host.url=http://your-sonarqube-server:9000
+                -Dsonar.login=your-sonarqube-token
+            """.stripIndent() // Customize with your SonarQube details
+            
+            bat(script: "${scannerBin} ${scannerArgs}", returnStatus: true)
+        }
+    }
+}
+
         }
     }
 
@@ -58,4 +66,4 @@ pipeline {
             cleanWs()
         }
     }
-}
+
