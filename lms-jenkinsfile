@@ -19,7 +19,7 @@ pipeline {
                     def workspace = pwd()
                     def webapp = "${workspace}/webapp"
                     //def calculatorFile = "${calculatorFolder}/calculator.py"
-                    def package-lock.json = "$webapp/package-lock.json"
+                    def package-lockjson = "$webapp/package-lock.json"
                     //def dockerfile = "${workspace}/Dockerfile"
 
                     if (fileExists(webapp)) {
