@@ -14,32 +14,24 @@ pipeline {
         }
 
         stage('Read Files') {
-            steps {
-                script {
-                    def workspace = pwd()
-                    def webapp = "${workspace}/webapp"
-                    //def calculatorFile = "${calculatorFolder}/calculator.py"
-                    def package-lockjson = "$webapp/package-lock.json"
-                    //def dockerfile = "${workspace}/Dockerfile"
+    steps {
+        script {
+            def workspace = pwd()
+            def webapp = "${workspace}/webapp"
+            def packageLockJson = "$webapp/package-lock.json"  // Changed variable name here
 
-                    if (fileExists(webapp)) {
-                        def webapp = readFile(file: webapp).trim()
-                        echo "package-lock.json:"
-                        echo package-lock.json
-                    } else {
-                        echo "The 'webapp' folder does not exist in the repository."
-                    }
-
-                    //if (fileExists(dockerfile)) {
-                       // def dockerfileContent = readFile(file: dockerfile).trim()
-                        //echo "\nContents of Dockerfile:"
-                        //echo dockerfileContent
-                    //} else {
-                        //echo "The 'Dockerfile' does not exist in the repository."
-                    //}
-                }
+            if (fileExists(webapp)) {
+                def webappContent = readFile(file: packageLockJson).trim()  // Changed variable name here
+                echo "package-lock.json:"
+                echo webappContent  // Changed variable name here
+            } else {
+                echo "The 'webapp' folder does not exist in the repository."
             }
         }
+    }
+}
+
+        
 
         stage('SonarQube Analysis') {
     steps {
